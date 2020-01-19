@@ -22,4 +22,13 @@ label{
     padding:20px;
     border:1px solid #bbb;
     box-shadow: 2px 2px 2px #ccc;
+    background: #aaa;
+    color:white;
+}
+
+.remove-note, .remove-note:hover{
+    float:right;
+    cursor:pointer;
+    color: red;
+    font-weight: bold;
 }
