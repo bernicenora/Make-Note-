@@ -3,21 +3,29 @@ const saveBtn = document.getElementById('saveBtn');
 const noteList = document.getElementById('note-list');
 
 
-
 //Event Listeners
 
-saveBtn.addEventListener('click', addNote);
+eventListeners();
+
 
 
 //Functions
+//Event Listener Function
+function eventListeners(){
+    //Add a note 
+    saveBtn.addEventListener('click', addNote);
+    
+    // Remove a note
+    noteList.addEventListener('click', removeNote);
+    }
 
 //Add a note by filling up the form
 function addNote(){
     let creator = document.getElementById('creator').value;
     let note = document.getElementById('note').value;
 
-    console.log(creator);
-    console.log(note);
+   // console.log(creator);
+   // console.log(note);
 
     const removeBtn = document.createElement('a');
     removeBtn.classList = 'remove-note';
@@ -45,6 +53,39 @@ function addNote(){
     addNoteLocalStorage(creator,note);
 }
 
-function addNoteLocalStorage(){
-
+// Function to remove note
+function removeNote(e){
+    
+    if (e.target.classList.contains('remove-note')){
+        e.target.parentElement.remove();
+    }
 }
+
+// Add Note to Local Storage
+function addNoteLocalStorage(creator,note){
+    
+    let notes = getNotesFromStorage(creator,note);
+    
+    notes.push(creator+','+note);
+    //console.log(notes);
+
+    //Converet the Reminder array into a string
+    localStorage.setItem('notes', JSON.stringify(notes));
+}
+
+// Get existing Notes from Local Storage
+
+function getNotesFromStorage(creator,note){
+    let notes;
+    let creatorLS;
+    const notesLS = localStorage.getItem('notes');
+
+    // Get the value, if null is returned, then we create an empty array
+    if (notesLS === null){
+        notes = [];
+    }else{
+        notes = JSON.parse(creatorLS+','+notesLS);
+    }
+    return notes;
+}
+
