@@ -1,7 +1,8 @@
 //Variables
 const saveBtn = document.getElementById('saveBtn');
 const noteList = document.getElementById('note-list');
-
+const obj={};
+const objArray = [];
 
 //Event Listeners
 
@@ -53,7 +54,7 @@ function addNote(){
     noteList.appendChild(div);
     
     // Now Save the note to the Local Storage by creating an array
-    addNoteLocalStorage(creator,note);
+    addNoteLocalStorage();
 }
 
 // Function to remove note
@@ -65,38 +66,51 @@ function removeNote(e){
 }
 
 // Add Note to Local Storage
-function addNoteLocalStorage(creator,note){
+function addNoteLocalStorage(){
     
-    let notes = getNotesFromStorage(creator,note);
-    //console.log("Notes: "+notes);
-    notes.push(creator+','+note);
+    let notes = getNotesFromStorage();
     
+    //creating the key-value pairs
+    let creator = document.getElementById('creator').value;
+    let note = document.getElementById('note').value;
+   
+    obj.creator = creator;
+    obj.note = note;
 
-    //Convert the Reminder array into a string
-    localStorage.setItem('notes', JSON.stringify(notes));
+    let jsonstring = JSON.stringify(obj);
+    
+    //create an array and push the string to the Object Array
+    objArray.push(jsonstring);
+    
+    //store the new note
+    localStorage.setItem('notes', objArray);
 }
 
 // Get existing Notes from Local Storage
 
-function getNotesFromStorage(creator,note){
+function getNotesFromStorage(){
     let notes;
-    let creatorLS;
     const notesLS = localStorage.getItem('notes');
-    //console.log("NotesLS: "+notesLS);
+    
     // Get the value, if null is returned, then we create an empty array
     if (notesLS === null){
         notes = [];
     }else{
-        notes = JSON.parse(notesLS);
+        console.log("NotesLS = "+(notesLS));
+        let notesArray = notesLS.split(",");
+        console.log("NotesArray = "+(notesArray));
+        notesArray.forEach(function(){
+            console.log((notesArray));
+        });
+        
     }
-    return notes;
 }
 
 // Prints all the Notes on Load of the Window
 function printNotesFromLocalStorageOnLoad(){
-    let notes = getNotesFromStorage(creator,note);
-    
-    notes.forEach(function(creator,note){
+    //let notes = getNotesFromStorage(creator,note);
+    //console.log(notes);
+   /* notes.forEach(function(creator,note){
         // Creating the Remove Button
         const removeBtn = document.createElement('a');
         removeBtn.classList = 'remove-note';
@@ -109,7 +123,7 @@ function printNotesFromLocalStorageOnLoad(){
         const newLine = document.createElement('hr'); // Create a Horizontal Element
 
         //Separating out the Creator of the Note and the Creator
-        console.log("Notes: "+notes);
+        console.log("Notes made it here: "+notes);
         let notesString = toString(JSON.parse(notes));
         console.log("Notes from LS: "+notesString);
         let notesArray = notes.split(',');
@@ -127,6 +141,6 @@ function printNotesFromLocalStorageOnLoad(){
 
         // Append the note to the div element
         noteList.appendChild(div);
-    });
+    });*/
 }
 
